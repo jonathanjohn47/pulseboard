@@ -1,1 +1,3 @@
-// ${file_name} file
+class DetailsController {
+  // Implement logic related to details view
+}
