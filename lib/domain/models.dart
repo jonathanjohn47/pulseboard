@@ -8,9 +8,14 @@ class User with _$User {
   const factory User({
     required String id,
     required String name,
+    required String email,
   }) = _User;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
+
+  @override
+  // TODO: implement email
+  String get email => throw UnimplementedError();
 
   @override
   // TODO: implement id
