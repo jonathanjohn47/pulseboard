@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'application/dashboard/dashboard_view.dart';
-import 'application/settings/settings_view.dart';
+import 'package:pulseboard/screens/dashboard/dashboard_screen.dart';
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));
@@ -34,11 +32,7 @@ class MyApp extends StatelessWidget {
         // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: DashboardView(), // Set initial route
-      routes: {
-        '/dashboard': (context) => DashboardView(),
-        '/settings': (context) => SettingsView(),
-      },
+      home: DashboardScreen(), // Set initial route
     );
   }
 }
