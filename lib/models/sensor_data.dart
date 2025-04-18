@@ -1,8 +1,9 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'sensor_data.freezed.dart';
+part 'sensor_data.g.dart';
 
-@Freezed()
+@freezed
 abstract class SensorData with _$SensorData {
   const factory SensorData({
     required String sensorId,
@@ -12,4 +13,6 @@ abstract class SensorData with _$SensorData {
     required String status, // e.g., 'green', 'yellow', etc.
     required String time, // e.g., '08:00'
   }) = _SensorData;
+
+  factory SensorData.fromJson(Map<String, dynamic> json) => _$SensorDataFromJson(json);
 }

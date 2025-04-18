@@ -12,6 +12,7 @@ part of 'sensor_data.dart';
 
 // dart format off
 T _$identity<T>(T value) => value;
+
 /// @nodoc
 mixin _$SensorData {
 
@@ -23,6 +24,8 @@ mixin _$SensorData {
 @pragma('vm:prefer-inline')
 $SensorDataCopyWith<SensorData> get copyWith => _$SensorDataCopyWithImpl<SensorData>(this as SensorData, _$identity);
 
+  /// Serializes this SensorData to a JSON map.
+  Map<String, dynamic> toJson();
 
 
 @override
@@ -30,7 +33,7 @@ bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is SensorData&&(identical(other.sensorId, sensorId) || other.sensorId == sensorId)&&(identical(other.temperature, temperature) || other.temperature == temperature)&&(identical(other.humidity, humidity) || other.humidity == humidity)&&(identical(other.pressure, pressure) || other.pressure == pressure)&&(identical(other.status, status) || other.status == status)&&(identical(other.time, time) || other.time == time));
 }
 
-
+@JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode => Object.hash(runtimeType,sensorId,temperature,humidity,pressure,status,time);
 
@@ -80,11 +83,11 @@ as String,
 
 
 /// @nodoc
-
+@JsonSerializable()
 
 class _SensorData implements SensorData {
   const _SensorData({required this.sensorId, required this.temperature, required this.humidity, required this.pressure, required this.status, required this.time});
-  
+  factory _SensorData.fromJson(Map<String, dynamic> json) => _$SensorDataFromJson(json);
 
 @override final  String sensorId;
 @override final  double temperature;
@@ -100,14 +103,17 @@ class _SensorData implements SensorData {
 @pragma('vm:prefer-inline')
 _$SensorDataCopyWith<_SensorData> get copyWith => __$SensorDataCopyWithImpl<_SensorData>(this, _$identity);
 
-
+@override
+Map<String, dynamic> toJson() {
+  return _$SensorDataToJson(this, );
+}
 
 @override
 bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is _SensorData&&(identical(other.sensorId, sensorId) || other.sensorId == sensorId)&&(identical(other.temperature, temperature) || other.temperature == temperature)&&(identical(other.humidity, humidity) || other.humidity == humidity)&&(identical(other.pressure, pressure) || other.pressure == pressure)&&(identical(other.status, status) || other.status == status)&&(identical(other.time, time) || other.time == time));
 }
 
-
+@JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode => Object.hash(runtimeType,sensorId,temperature,humidity,pressure,status,time);
 
