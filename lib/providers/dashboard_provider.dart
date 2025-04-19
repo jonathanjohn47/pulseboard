@@ -1,3 +1,4 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pulseboard/models/dashboard_data.dart';
 import 'package:pulseboard/models/sensor_data.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -49,6 +50,7 @@ final DashboardData dashboardData = DashboardData(sensorReadings: [
   return SensorData.fromJson(element);
 }).toList());
 
+StateProvider<bool> isTemperatureProvider = StateProvider<bool>((ref) => true);
 
 @riverpod
 DashboardData getDashboardData(ref) {
@@ -68,4 +70,18 @@ double getMinimumTemperature(ref) {
   final dashboardData = ref.watch(getDashboardDataProvider);
   return dashboardData.sensorReadings.map((e) => e.temperature).reduce((value,
       element) => value < element ? value : element);
+}
+
+@riverpod
+double getMinimumHumidity(ref) {
+  final dashboardData = ref.watch(getDashboardDataProvider);
+  return dashboardData.sensorReadings.map((e) => e.humidity).reduce((value,
+      element) => value < element ? value : element);
+}
+
+@riverpod
+double getMaximumHumidity(ref) {
+  final dashboardData = ref.watch(getDashboardDataProvider);
+  return dashboardData.sensorReadings.map((e) => e.humidity).reduce((value,
+      element) => value > element ? value : element);
 }
