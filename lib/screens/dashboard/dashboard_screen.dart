@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pulseboard/providers/dashboard_provider.dart';
@@ -5,7 +6,9 @@ import 'package:pulseboard/widgets/app_bar_action_icon.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../models/sensor_data.dart';
+import '../../utility/router.dart';
 
+@RoutePage()
 class DashboardScreen extends ConsumerStatefulWidget {
   const DashboardScreen({super.key});
 
@@ -23,7 +26,9 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
         title: Text("Sensor Overview"),
         actions: [
           AppBarActionIcon(icon: Icons.settings, onPressed: () {}),
-          AppBarActionIcon(icon: Icons.details, onPressed: () {}),
+          AppBarActionIcon(icon: Icons.details, onPressed: () {
+            AutoRouter.of(context).push(DetailsScreenRoute());
+          }),
         ],
       ),
       body: Column(children: [
