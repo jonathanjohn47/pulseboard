@@ -17,7 +17,7 @@ final DashboardData dashboardData = DashboardData(sensorReadings: [
   {
     "sensorId": "sensor_002",
     "temperature": 25.1,
-    "humidity": 50.2,
+    "humidity": 5.2,
     "pressure": 1012.80,
     "status": "warm",
     "time": "08:15"
@@ -25,7 +25,7 @@ final DashboardData dashboardData = DashboardData(sensorReadings: [
   {
     "sensorId": "sensor_003",
     "temperature": 22.8,
-    "humidity": 40.5,
+    "humidity": 4.5,
     "pressure": 1014.00,
     "status": "mild",
     "time": "08:30"
@@ -41,7 +41,7 @@ final DashboardData dashboardData = DashboardData(sensorReadings: [
   {
     "sensorId": "sensor_005",
     "temperature": 21.9,
-    "humidity": 42.3,
+    "humidity": 22.3,
     "pressure": 1013.50,
     "status": "cool",
     "time": "09:00"
@@ -84,4 +84,18 @@ double getMaximumHumidity(ref) {
   final dashboardData = ref.watch(getDashboardDataProvider);
   return dashboardData.sensorReadings.map((e) => e.humidity).reduce((value,
       element) => value > element ? value : element);
+}
+
+@riverpod
+double getMaximumPressure(ref) {
+  final dashboardData = ref.watch(getDashboardDataProvider);
+  return dashboardData.sensorReadings.map((e) => e.pressure).reduce((value,
+      element) => value > element ? value : element);
+}
+
+@riverpod
+double getMinimumPressure(ref) {
+  final dashboardData = ref.watch(getDashboardDataProvider);
+  return dashboardData.sensorReadings.map((e) => e.pressure).reduce((value,
+      element) => value < element ? value : element);
 }
