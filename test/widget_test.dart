@@ -1,29 +1,38 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:pulseboard/main.dart';
+import 'package:pulseboard/utility/router.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(MyApp());
+  testWidgets('Switch between temperature and humidity in Settings', (
+    WidgetTester tester,
+  ) async {
+    final _appRouter = AppRouter();
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    await tester.pumpWidget(
+      ProviderScope(
+        child: MaterialApp.router(routerConfig: _appRouter.config()),
+      ),
+    );
+    await tester.pumpAndSettle();
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    final settingsIconFinder = find.byIcon(Icons.settings);
+    expect(settingsIconFinder, findsOneWidget);
+    await tester.tap(settingsIconFinder);
+    await tester.pumpAndSettle();
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    final tempButtonFinder = find.text('Temperature');
+    final humidityButtonFinder = find.text('Humidity');
+
+    expect(tempButtonFinder, findsOneWidget);
+    expect(humidityButtonFinder, findsOneWidget);
+
+    await tester.tap(humidityButtonFinder);
+    await tester.pumpAndSettle();
+
+    tester.state<NavigatorState>(find.byType(Navigator)).pop();
+    await tester.pumpAndSettle();
+
+    expect(find.text('Humidity (%)'), findsOneWidget);
   });
 }

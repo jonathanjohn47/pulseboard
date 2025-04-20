@@ -24,6 +24,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(
+              key: Key('temperatureButton'),
               onPressed:
                   () => ref.read(isTemperatureProvider.notifier).state = true,
               child: Text(
@@ -46,6 +47,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               ),
             ),
             ElevatedButton(
+              key: Key('humidityButton'),
               onPressed: () {
                 ref.read(isTemperatureProvider.notifier).state = false;
               },
