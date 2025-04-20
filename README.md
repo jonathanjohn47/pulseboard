@@ -53,8 +53,9 @@ The project follows a domain-driven folder structure:
 ## Running Tests
 
 1.  Navigate to the project directory in your terminal.
-2.  To run unit tests, execute: `flutter test unit_test.dart`.
-3.  To run widget tests, execute: `flutter test widget_test.dart`.
+2.  Navigate to the `test/` directory.
+3.  To run unit tests, execute: `flutter test unit_test.dart`.
+4.  To run widget tests, execute: `flutter test widget_test.dart`.
 
 ## Design Decisions
 
