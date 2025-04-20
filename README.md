@@ -1,77 +1,61 @@
-# Pulseboard Analytics Dashboard - Finexos Technical Test
+Okay, based on the sources and our previous conversation, here is a modified version of the `readme.md` file:
 
-This Flutter web application, **"Pulseboard"**, serves as a small analytics dashboard built as part of the Finexos Flutter Developer role selection process. It is designed to be a realistic demonstration of the kind of work expected at Finexos and an opportunity to showcase **design thinking, technical decisions, and attention to detail**.
+# Pulseboard Analytics Dashboard
 
 ## Goal
 
-The primary goal of this project is to build a Flutter web app that acts as a small analytics dashboard, effectively demonstrating:
-
-*   **Design/UX skills**: Polished layouts and custom charts.
-*   **Architecture**: Clean, domain-driven folder structure.
-*   **Use of key technologies**: Riverpod (state management), AutoRoute (routing), and Freezed (data modeling).
-*   **Testing practices**: Implementation of unit and widget tests.
+This Flutter web application, "Pulseboard," serves as a small analytics dashboard designed to demonstrate design and UX skills, a clean domain-driven architecture, the use of Riverpod for state management, AutoRoute for routing, Freezed for data modeling, and comprehensive testing practices. This project fulfills the requirements outlined in the Finexos technical test brief.
 
 ## Key Features
 
 *   **Flutter Web Application**: A dashboard accessible directly in the browser.
-*   **Domain-Driven Folder Structure**: The codebase is organized into distinct layers with clear responsibilities, such as `domain/`, `data/`, `application/` (or `features/`), and `presentation/`.
+*   **Domain-Driven Folder Structure**: The codebase is organized into distinct layers to maintain clear responsibilities. The project includes directories such as `domain/` (implicitly through models), `data/` (implicitly through providers managing data), `application/` (or `features/` - represented by `providers/`), and `presentation/` (comprising `screens/` and `widgets/`).
 *   **Navigation with AutoRoute**: Implemented with at least three screens:
-    *   **Dashboard**: Provides a high-level overview of sensor data.
-    *   **Details**: Displays advanced charts for a selected sensor or facility.
-    *   **Settings**: Includes toggles to simulate offline sensors and error states.
-*   **State Management with Riverpod**: Used to manage:
-    *   Sensor data.
-    *   Current selections.
-    *   Simulation toggles.
-*   **Data Modeling with Freezed**: Employed for creating robust and concise sensor data models (e.g., temperature, humidity, status). The `SensorData` model in the sources includes fields for `sensorId`, `temperature`, `humidity`, `pressure`, `status`, and `time`. The `DashboardData` model contains a list of `SensorData`.
-*   **Mock Data and Custom Chart**: No real backend is used; the application relies on mock data. A **custom, interactive "bubble chart"** is implemented to display multiple metrics:
-    *   **X-axis**: Represents time (e.g., hourly from 08:00–18:00) or sensor location (e.g., "Line A," "Line B," etc.).
-    *   **Y-axis**: Displays temperature (or another key metric).
-    *   **Bubble size**: Controlled by humidity or pressure, selectable via a toggle.
-    *   **Bubble color**: Indicates sensor status based on anomaly level:
-        *   0% anomaly → Green
-        *   1–50% anomaly → Yellow
-        *   51–100% anomaly → Red
-        *   Offline / Unknown → Gray
-*   **Edge Case Handling**: The application accounts for:
-    *   **Missing data**: Displayed with a placeholder (e.g., "?") or a distinct shape.
-    *   **Offline sensors**: Represented by a gray bubble, optionally smaller or translucent.
-*   **User-Configurable Chart**: Toggles are provided to allow users to choose which metric determines the bubble size. The settings screen in the provided code includes toggles for switching between temperature and humidity display.
-*   **Design and Responsiveness**: The application is designed to be visually appealing and responsive, with consistent styling (color palette, text, spacing).
+    *   **Dashboard**: Provides a high-level sensor overview. This screen (`screens/dashboard_screen.dart`) displays a bubble chart of sensor data.
+    *   **Details**: Displays advanced charts for a selected sensor or facility. The `DetailsScreen` (`screens/details_screen.dart`) shows line and bubble charts for temperature, humidity, and pressure.
+    *   **Settings**: Includes toggles to simulate offline sensors, error states, etc.. The `SettingsScreen` (`screens/settings_screen.dart`) currently provides toggles to switch the primary metric displayed on the Dashboard between temperature and humidity. Navigation between these screens is handled using `AutoRouter` as defined in `utility/router.dart` and utilized in the `AppBarActionIcon` widget.
+*   **State Management with Riverpod**: Used extensively for managing application state:
+    *   **Sensor data**: The `DashboardData` (`models/dashboard_data.dart`) containing `SensorData` (`models/sensor_data.dart`) is managed by providers like `getDashboardDataProvider` in `providers/dashboard_provider.dart`. This provider supplies the mock sensor readings.
+    *   **Current selections**: While not explicitly shown in the provided snippets, the architecture supports the concept of managing selections for the "Details" screen.
+    *   **Simulation toggles**: The `isTemperatureProvider` in `providers/dashboard_provider.dart` and its usage in `SettingsScreen` demonstrate the management of simulation-related states.
+*   **Data Modeling with Freezed**: Employed for creating immutable data classes for sensor data. The `SensorData` model (`models/sensor_data.dart`) includes fields for `sensorId`, `temperature`, `humidity`, `pressure`, `status`, and `time`. The `DashboardData` model (`models/dashboard_data.dart`) holds a list of `SensorData`. The generated Freezed code can be seen in files like `models/dashboard_data.freezed.dart` and `models/sensor_data.freezed.dart`. JSON serialization is handled by `json_serializable` as indicated by `models/sensor_data.g.dart`.
+*   **Mock Data & Custom Chart**: No real backend is used; the application relies on hardcoded mock data within `providers/dashboard_provider.dart`. A **custom, interactive "bubble chart"** is implemented in the `DashboardScreen` (`screens/dashboard_screen.dart`) using the `BubbleSeries` from the `syncfusion_flutter_charts` package.
+    *   **X-axis**: Represents `data.status`, although the requirements allowed for time or sensor location.
+    *   **Y-axis**: Displays either temperature or humidity, selectable via toggles in the `SettingsScreen`. The `isTemperatureProvider` controls which metric is used.
+    *   **Bubble size**: Is currently determined by a fixed multiplier based on the index of the data point (`num * 2` in `DashboardScreen` and `num * 0.5` in `DetailsScreen`). **A toggle to choose between humidity and pressure as the driving metric for bubble size is not explicitly implemented in the provided code or the `SettingsScreen`**.
+    *   **Bubble color**: Indicates sensor status based on the `status` field in the `SensorData` model. The colors are mapped as follows: 'cool' -> light blue, 'mild' -> blue, 'warm' -> orange, 'hot' -> red, and default -> grey. While this reflects different states, the **explicit mapping to the anomaly percentage ranges (0% -> Green, 1–50% -> Yellow, 51–100% -> Red)** as specified in the requirements is not directly visible in the provided `DashboardScreen` code. Gray is used as a default, which could represent offline or unknown status.
+*   **Edge Case Handling**:
+    *   **Missing data**: The provided code does not explicitly demonstrate a specific placeholder for missing data in the UI.
+    *   **Offline sensors**: Represented by a gray bubble by default in the chart, which could correspond to an unknown or offline status.
+*   **User-Configurable Chart**: Toggles are provided in the `SettingsScreen` to allow users to switch between temperature and humidity as the primary metric displayed on the Dashboard chart. **However, a toggle to choose the metric for bubble size (humidity vs. pressure) is not evident in the provided code**.
+*   **Design and Responsiveness**: The application aims to be visually appealing with consistent styling. A basic theme is set in `main.dart`. Responsiveness would typically involve layout adjustments for different screen sizes, although specific implementations are not fully evident in the provided snippets.
 *   **Comprehensive Testing**: The project includes:
-    *   **Unit tests** for key logic (e.g., data transformations, state changes), as demonstrated in the `unit_test.dart` file which tests the minimum and maximum temperature and humidity providers.
-    *   **Widget tests** for at least one major component, such as the custom chart widget, as shown in `widget_test.dart` which tests the switching between temperature and humidity in the settings screen.
+    *   **Unit tests** for key logic, as demonstrated in `unit_test.dart`, which tests the `getMinimumTemperatureProvider` and `getMaximumHumidityProvider`.
+    *   **Widget tests** for at least one major component. `widget_test.dart` includes a widget test for switching between temperature and humidity in the `SettingsScreen`.
 
-## Technologies Used
+## Folder Structure
 
-*   **Flutter**: The primary framework for building the web application.
-*   **Riverpod**: Used for robust state management. The `providers/dashboard_provider.dart` file defines providers for accessing dashboard data and derived states like minimum and maximum temperature, humidity, and pressure.
-*   **AutoRoute**: Implemented for declarative routing. The `utility/router.dart` and `utility/router.gr.dart` files define the application's routes for the `DashboardScreen`, `DetailsScreen`, and `SettingsScreen`.
-*   **Freezed**: Utilized for efficient data modeling, as seen in the `models/dashboard_data.dart`, `models/sensor_data.dart`, and their generated `.freezed.dart` and `.g.dart` files.
+The project follows a domain-driven folder structure:
 
-## How to Run the Project
+*   `models/`: Contains the data models (`sensor_data.dart`, `dashboard_data.dart`, `user.dart`) defined using Freezed.
+*   `providers/`: Holds the Riverpod providers (`dashboard_provider.dart`) for managing application state and accessing data.
+*   `screens/`: Contains the UI screens (`dashboard_screen.dart`, `details_screen.dart`, `settings_screen.dart`) built with Flutter widgets.
+*   `widgets/`: Includes reusable UI components (`app_bar_action_icon.dart`).
+*   `utility/`: Contains utility classes and configurations, such as the `AutoRoute` setup (`router.dart`, `router.gr.dart`).
 
-1.  Ensure you have Flutter installed and configured for web development.
-2.  Clone this GitHub repository.
+## Running the Project
+
+1.  Ensure you have Flutter installed and set up for web development.
+2.  Clone the GitHub repository.
 3.  Navigate to the project directory in your terminal.
-4.  Run the command: `flutter run -d chrome`
+4.  Run the command: `flutter run -d chrome`.
 
-## How to Run Tests
-
-Instructions on how to run the tests are as follows:
+## Running Tests
 
 1.  Navigate to the project directory in your terminal.
-2.  Navigate to the `test/` directory.
-3.  To run unit tests, use the command: `flutter test unit_test.dart`
-4.  To run widget tests, use the command: `flutter test widget_test.dart`
+2.  To run unit tests, execute: `flutter test unit_test.dart`.
+3.  To run widget tests, execute: `flutter test widget_test.dart`.
 
-## Folder Structure and Design Decisions
+## Design Decisions
 
-The project follows a domain-driven architecture, separating concerns into distinct layers.
-
-*   **domain/**: Contains core business logic and entities (e.g., sensor data).
-*   **data/**: Handles data sources and repositories (in this case, mock data).
-*   **application/** (or **features/**): Implements use cases and application logic, often using Riverpod providers. The `providers/` directory serves this purpose in the provided code.
-*   **presentation/**: Contains the UI layer (widgets and screens), such as the `screens/` and `widgets/` directories.
-
-Key design decisions include the choice of Riverpod for reactive state management, AutoRoute for type-safe navigation, and Freezed for boilerplate-free data classes. The custom bubble chart in the `DashboardScreen` is implemented using `syncfusion_flutter_charts`. The `SettingsScreen` allows toggling between temperature and humidity as the primary metric displayed on the `DashboardScreen`. The `DetailsScreen` provides more detailed views of the sensor data using different chart types.
+The application leverages Flutter's widget-based UI framework, Riverpod for reactive state management, AutoRoute for simplified navigation, and Freezed for concise and robust data modeling. The use of a domain-driven folder structure aims to separate concerns and improve code maintainability. The bubble chart was chosen as the primary visualization for the dashboard to display multiple sensor metrics simultaneously, utilizing the `syncfusion_flutter_charts` library for its interactive capabilities. Mock data was used to simulate sensor readings as no real backend was required.
