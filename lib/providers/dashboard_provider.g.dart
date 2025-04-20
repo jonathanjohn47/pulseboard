@@ -100,5 +100,43 @@ final getMaximumHumidityProvider = AutoDisposeProvider<double>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef GetMaximumHumidityRef = AutoDisposeProviderRef<double>;
+String _$getMaximumPressureHash() =>
+    r'fbc326a0da69adba5704b5c11143cf16b45c827b';
+
+/// See also [getMaximumPressure].
+@ProviderFor(getMaximumPressure)
+final getMaximumPressureProvider = AutoDisposeProvider<double>.internal(
+  getMaximumPressure,
+  name: r'getMaximumPressureProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$getMaximumPressureHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef GetMaximumPressureRef = AutoDisposeProviderRef<double>;
+String _$getMinimumPressureHash() =>
+    r'277f1a005404c61e8c9ef39d4b5926fb8bfebefd';
+
+/// See also [getMinimumPressure].
+@ProviderFor(getMinimumPressure)
+final getMinimumPressureProvider = AutoDisposeProvider<double>.internal(
+  getMinimumPressure,
+  name: r'getMinimumPressureProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$getMinimumPressureHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef GetMinimumPressureRef = AutoDisposeProviderRef<double>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

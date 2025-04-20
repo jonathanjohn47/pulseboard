@@ -25,14 +25,16 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
       appBar: AppBar(
         title: Text("Sensor Overview"),
         actions: [
-          AppBarActionIcon(icon: Icons.settings, onPressed: () {}),
+          AppBarActionIcon(icon: Icons.settings, onPressed: () {
+            AutoRouter.of(context).push(SettingsScreenRoute());
+          }),
           AppBarActionIcon(icon: Icons.details, onPressed: () {
             AutoRouter.of(context).push(DetailsScreenRoute());
           }),
         ],
       ),
       body: Column(children: [
-        SfCartesianChart(
+        isTemperature ? SfCartesianChart(
             primaryXAxis: CategoryAxis(),
             primaryYAxis: NumericAxis(
                 minimum: isTemperature
@@ -66,6 +68,20 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                         return Colors.grey;
                     }
                   }),
+
+            ]) : SfCartesianChart(
+            primaryXAxis: CategoryAxis(),
+            primaryYAxis: NumericAxis(
+                minimum: isTemperature
+                    ? getMinimumTemperature(ref) - 1
+                    : getMinimumHumidity(ref) - 5,
+                maximum: isTemperature
+                    ? getMaximumTemperature(ref) + 1
+                    : getMaximumHumidity(ref) + 5),
+            tooltipBehavior: TooltipBehavior(enable: false),
+            title: ChartTitle(
+                text: isTemperature ? 'Temperature (°C)' : 'Humidity (%)'),
+            series: <CartesianSeries<SensorData, String>>[
               BubbleSeries<SensorData, String>(
                   dataSource: getDashboardDataFromProvider.sensorReadings,
                   xValueMapper: (SensorData data, _) => data.status,
@@ -100,49 +116,6 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
             ? getMinimumTemperature(ref)
             : getMinimumHumidity(ref)}"),
         SizedBox(height: 20,),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              onPressed: () =>
-              ref
-                  .read(isTemperatureProvider.notifier)
-                  .state = true,
-              child: Text("Temperature", style: TextStyle(
-                  color: isTemperature ? Colors.white : Colors.blue)),
-              style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(10),
-                    bottomLeft: Radius.circular(10),
-                  ),
-                  side: BorderSide(
-                      color: Colors.grey), // Optional: Add a border
-                ),
-                backgroundColor: isTemperature ? Colors.blue : null,
-              ),
-
-            ),
-            ElevatedButton(
-              onPressed: () {
-                ref
-                    .read(isTemperatureProvider.notifier)
-                    .state = false;
-              },
-              child: Text("Humidity", style: TextStyle(
-                  color: isTemperature ? Colors.blue : Colors.white)),
-              style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(10),
-                    bottomRight: Radius.circular(10),
-                  ),
-                  side: BorderSide(
-                      color: Colors.grey), // Optional: Add a border
-                ),
-                backgroundColor: !isTemperature ? Colors.blue : null,
-              ),),
-          ],)
       ],),
     );
   }

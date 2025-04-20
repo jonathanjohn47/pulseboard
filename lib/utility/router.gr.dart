@@ -41,3 +41,19 @@ class DetailsScreenRoute extends PageRouteInfo<void> {
     },
   );
 }
+
+/// generated route for
+/// [SettingsScreen]
+class SettingsScreenRoute extends PageRouteInfo<void> {
+  const SettingsScreenRoute({List<PageRouteInfo>? children})
+    : super(SettingsScreenRoute.name, initialChildren: children);
+
+  static const String name = 'SettingsScreenRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const SettingsScreen();
+    },
+  );
+}
