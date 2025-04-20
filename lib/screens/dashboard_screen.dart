@@ -5,8 +5,8 @@ import 'package:pulseboard/providers/dashboard_provider.dart';
 import 'package:pulseboard/widgets/app_bar_action_icon.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-import '../../models/sensor_data.dart';
-import '../../utility/router.dart';
+import '../models/sensor_data.dart';
+import '../utility/router.dart';
 
 @RoutePage()
 class DashboardScreen extends ConsumerStatefulWidget {

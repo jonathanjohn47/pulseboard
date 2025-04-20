@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 
-import '../screens/dashboard/dashboard_screen.dart';
-import '../screens/details/details_screen.dart';
+import '../screens/dashboard_screen.dart';
+import '../screens/details_screen.dart';
 
 part 'router.gr.dart';
 

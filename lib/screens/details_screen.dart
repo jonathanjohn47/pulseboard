@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-import '../../models/sensor_data.dart';
-import '../../providers/dashboard_provider.dart';
+import '../models/sensor_data.dart';
+import '../providers/dashboard_provider.dart';
 
 @RoutePage()
 class DetailsScreen extends ConsumerStatefulWidget {
